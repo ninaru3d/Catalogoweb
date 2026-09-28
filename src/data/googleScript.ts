@@ -1,5 +1,6 @@
 import type { StoreData } from '../domain/catalog'
-const url = (import.meta.env.VITE_GOOGLE_SCRIPT_URL || '').trim()
+const DEFAULT_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzPtSFx54C3-V2SiB8awusUEoQIhTpKDr4fLh_QJzneedOUtmkyUeXn74A5ntr2_KGg/exec'
+const url = (import.meta.env.VITE_GOOGLE_SCRIPT_URL || DEFAULT_GOOGLE_SCRIPT_URL).trim()
 export const googleConfigured = !!url
 let token = ''
 let verified = false

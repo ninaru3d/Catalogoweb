@@ -1,0 +1,10 @@
+{
+  "name": "tienda-catalogo",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": { "dev": "vite --configLoader native", "build": "tsc --noEmit && vite build --configLoader native", "preview": "vite preview --configLoader native", "demo": "npm run build -- --mode local-demo && npm run preview -- --host 127.0.0.1", "test": "node --test tests/*.test.mjs" },
+  "engines": { "node": ">=24.0.0" },
+  "dependencies": { "react": "^19.2.0", "react-dom": "^19.2.0", "react-router-dom": "^7.18.3" },
+  "devDependencies": { "@types/react": "^19.2.0", "@types/react-dom": "^19.2.0", "@vitejs/plugin-react": "^5.0.0", "typescript": "~5.9.3", "vite": "^7.3.0" }
+}

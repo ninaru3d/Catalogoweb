@@ -1,44 +1,51 @@
-# Tienda catálogo — primera implementación
+# Ninaru 3D — catálogo web
 
-React + Vite + TypeScript. Marca provisional Estudio. MXN. Maquillaje e impresión 3D.
+Tienda catálogo de maquillaje e impresión 3D construida con React, Vite y TypeScript. Los precios se muestran en MXN y las solicitudes se envían por WhatsApp; el cobro en línea se incorporará cuando estén definidos los costos de envío.
 
-## Ejecutar
+## Ejecutar localmente
 
-Node 24+. Dependencias y lockfile incluidos.
+Requiere Node.js 24 o posterior.
 
 ```sh
 npm ci
-npm run demo
+npm run dev
 ```
 
-Abrir http://127.0.0.1:4173/ y /admin. El modo local-demo habilita edición en el navegador: no publicar ese build. `npm run build` genera producción con admin deshabilitado hasta implementar autenticación. `npm test` ejecuta las pruebas.
+Para compilar y revisar la versión de producción:
 
-`npm run dev` es el flujo normal con HMR. En el sandbox Windows actual esbuild falla por permisos de lectura de un directorio antecesor. `npm run demo` es el camino verificado, sin modificar permisos del sistema; recompilar tras cambiar código.
+```sh
+npm run build
+npm run preview -- --host 127.0.0.1
+```
 
-## Implementado
+La variable `VITE_GOOGLE_SCRIPT_URL` debe contener la URL `/exec` del Apps Script exclusivo de Ninaru. Consulta `.env.example`; nunca agregues la clave del administrador ni `.env.local` al repositorio.
 
-- Home modular: banners, carruseles por selección/categoría y tarjetas informativas/de producto, con orden y visibilidad.
-- PLP con publicados por categoría, precios desde/por cotizar y carga incremental.
-- PDP con galería, variantes, cantidades, personalización, plazo y relacionados de la misma categoría.
-- WhatsApp con selección y subtotal; deshabilitado hasta configurar número; no envía mensajes automáticamente.
-- Admin local: CRUD de productos, variantes, relacionados, fotos comprimidas, orden de galería, bloques y configuración.
-- Guardado explícito localStorage y exportación JSON. Error visible si la cuota impide guardar.
-- Rutas directas, 404 visual, títulos por ruta y estilos responsive.
+## Funcionalidad
 
-## Límites actuales
-
-Google sin conectar y autenticación productiva pendiente. NO se utilizan credenciales de ETM. Datos/precios/marca de demostración y fotos pendientes. El almacenamiento es de este navegador, no compartido. Robots sigue en noindex. No hay pagos ni carrito. Ver GOOGLE-REVISION.md antes de configurar Google.
+- Home administrable con banners animados, promociones, tarjetas y carruseles por categoría.
+- PLP para Maquillaje e Impresión 3D.
+- PDP con variantes, cantidad, referencias relacionadas y galería táctil de varias fotografías.
+- Solicitudes por WhatsApp con producto, variante, cantidad, subtotal y datos de personalización.
+- Administrador para productos, imágenes, precios, variantes, secciones del Home y número de contacto.
+- Persistencia en Google Sheets y almacenamiento privado de imágenes en Drive mediante Apps Script.
+- Control de versiones del catálogo y prevención de sobrescrituras concurrentes.
+- Diseño adaptable a móvil y preferencias de movimiento reducido.
 
 ## Validación
 
-Build de producción y demo aprobados. Cuatro pruebas de dominio. Navegador: Home, PLP con cuatro productos de maquillaje, PDP con cambio de precio 320→360, relacionados correctos y guardar/recargar/restaurar nombre de producto. Home móvil sin desbordamiento. No se enviaron mensajes.
+```sh
+npm test
+npm run build
+```
 
-## Próximos pasos
+La integración se verificó contra el Apps Script de Ninaru: lectura pública, autenticación administrativa, guardado persistente, subida y recuperación de imágenes. Home, PLP y PDP fueron revisados en escritorio y móvil.
 
-Revisión de cuenta y recursos Google exclusivos → backend OAuth/Sheets/Drive y login → persistencia real → contenido y fotos → pruebas de permisos y publicación → SEO/prerenderizado → GitHub/Vercel/dominio. Planeación general en ../PLANEACION.md.
+## Estado del lanzamiento
 
-## Integración preparada con Apps Script
+La infraestructura y el catálogo de demostración están conectados. Antes del lanzamiento deben reemplazarse los textos, precios e imágenes provisionales por contenido real, rotarse la clave administrativa que se utilizó durante las pruebas, configurar Vercel y retirar `noindex` cuando el dominio definitivo esté listo.
 
-La decisión vigente sustituye OAuth manual por un Apps Script exclusivo de Ninaru, como ETM. Código y guía en `google-apps-script/`. El sitio cambia a modo remoto al configurar `VITE_GOOGLE_SCRIPT_URL`; requiere login validado por el script para edición. Sin URL conserva la demostración local. La clave del panel permanece en las propiedades privadas del script; token de sesión solo en memoria. La hoja aún debe crearse y probarse en la cuenta real mediante `setupNinaru`.
+No hay pagos ni carrito en este alcance. Los pedidos y costos de envío se confirman por WhatsApp.
 
-Las notas anteriores sobre autenticación pendiente corresponden al estado previo: la implementación ahora está preparada, pero la conexión real, las redirecciones de Google y la persistencia deben verificarse una vez recibida la URL /exec. No hay una conexión activa ni se han leído credenciales de ETM.
+## Apps Script
+
+El backend y su guía de instalación están en `google-apps-script/`. Utiliza recursos exclusivos de Ninaru y no reutiliza credenciales ni archivos del proyecto ETM.
